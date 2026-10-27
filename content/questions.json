@@ -1,0 +1,876 @@
+[
+ {
+  "n": 1,
+  "title": "Encapsulation: class Product",
+  "hint": "class, private, constructor, getter, String.split",
+  "text": "Hehe Groceries wants to keep its products in objects. Create class Product with these private attributes:",
+  "bullets": [
+   "productId (String), productName (String), productPrice (int), productStock (int)",
+   "A public constructor that fills all four attributes, and a public getter for each attribute",
+   "A method getTotalValue() that returns productPrice x productStock",
+   "In Main: read an integer N, then N lines in the format ID;Name;Price;Stock. Store every product in an ArrayList<Product>",
+   "Print each product as:  PR001 | Indomie Goreng | Rp 3500 x 40 = Rp 140000",
+   "Finally print:  Total inventory value: Rp <sum of all total values>"
+  ],
+  "tests": [
+   {
+    "name": "Three products",
+    "input": "3\nPR001;Indomie Goreng;3500;40\nPR002;Teh Botol Sosro;5000;24\nPR003;Roti Tawar;15000;10",
+    "expect": [
+     "PR001 | Indomie Goreng | Rp 3500 x 40 = Rp 140000",
+     "PR002 | Teh Botol Sosro | Rp 5000 x 24 = Rp 120000",
+     "PR003 | Roti Tawar | Rp 15000 x 10 = Rp 150000",
+     "Total inventory value: Rp 410000"
+    ]
+   },
+   {
+    "name": "One product with spaces in the name",
+    "input": "1\nPR010;Minyak Goreng 2L;38000;7",
+    "expect": [
+     "PR010 | Minyak Goreng 2L | Rp 38000 x 7 = Rp 266000",
+     "Total inventory value: Rp 266000"
+    ]
+   },
+   {
+    "name": "Empty inventory",
+    "input": "0",
+    "expect": [
+     "Total inventory value: Rp 0"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "class",
+    "name": "Product",
+    "label": "class Product exists"
+   },
+   {
+    "type": "privateFields",
+    "cls": "Product",
+    "names": [
+     "productId",
+     "productName",
+     "productPrice",
+     "productStock"
+    ],
+    "label": "Product's attributes are private"
+   },
+   {
+    "type": "ctorParams",
+    "cls": "Product",
+    "n": 4,
+    "label": "Product has a constructor with 4 parameters"
+   },
+   {
+    "type": "method",
+    "cls": "Product",
+    "name": "getTotalValue",
+    "label": "Product has getTotalValue()"
+   },
+   {
+    "type": "usesType",
+    "names": [
+     "ArrayList"
+    ],
+    "label": "uses an ArrayList"
+   }
+  ]
+ },
+ {
+  "n": 2,
+  "title": "Access modifiers: fix class Member",
+  "hint": "private, public, getter, boolean method",
+  "text": "The starter code does not compile because Main touches Member's private attributes directly. Fix it without making any attribute public:",
+  "bullets": [
+   "Keep name and points private. Do NOT add a setPoints() method",
+   "Add public methods: getName(), getPoints(), addPoints(int amount) and boolean redeemPoints(int amount)",
+   "addPoints ignores amounts <= 0. redeemPoints returns false (and changes nothing) when the amount is <= 0 or larger than the current points",
+   "Input: the member name (one line), N, then N commands: ADD <amount> or REDEEM <amount>",
+   "After ADD print:  Points: <current points>",
+   "After REDEEM print:  Redeemed <amount> points   or   Failed to redeem <amount> points",
+   "At the end print:  <name> has <points> points"
+  ],
+  "tests": [
+   {
+    "name": "Add and redeem",
+    "input": "Budi Santoso\n4\nADD 100\nREDEEM 30\nREDEEM 500\nADD -20",
+    "expect": [
+     "Points: 100",
+     "Redeemed 30 points",
+     "Failed to redeem 500 points",
+     "Points: 70",
+     "Budi Santoso has 70 points"
+    ]
+   },
+   {
+    "name": "Redeem before having points",
+    "input": "Ani\n3\nREDEEM 10\nADD 50\nREDEEM 50",
+    "expect": [
+     "Failed to redeem 10 points",
+     "Points: 50",
+     "Redeemed 50 points",
+     "Ani has 0 points"
+    ]
+   },
+   {
+    "name": "Zero amounts",
+    "input": "Citra Lestari\n2\nADD 0\nREDEEM 0",
+    "expect": [
+     "Points: 0",
+     "Failed to redeem 0 points",
+     "Citra Lestari has 0 points"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "privateFields",
+    "cls": "Member",
+    "names": [
+     "name",
+     "points"
+    ],
+    "label": "name and points are still private"
+   },
+   {
+    "type": "method",
+    "cls": "Member",
+    "name": "getPoints",
+    "access": "public",
+    "label": "public getPoints()"
+   },
+   {
+    "type": "method",
+    "cls": "Member",
+    "name": "addPoints",
+    "access": "public",
+    "label": "public addPoints(int)"
+   },
+   {
+    "type": "method",
+    "cls": "Member",
+    "name": "redeemPoints",
+    "access": "public",
+    "ret": "boolean",
+    "label": "public boolean redeemPoints(int)"
+   },
+   {
+    "type": "noMethod",
+    "cls": "Member",
+    "name": "setPoints",
+    "label": "no setPoints() backdoor"
+   }
+  ]
+ },
+ {
+  "n": 3,
+  "title": "Inheritance: Employee, Cashier, Supervisor",
+  "hint": "extends, protected, super(...), @Override",
+  "text": "Create a parent class Employee and two child classes:",
+  "bullets": [
+   "Employee: protected name (String) and baseSalary (int), a constructor, int calculateSalary() that returns baseSalary, String getRole() that returns \"Employee\", and display() that prints:  <role> - <name> - Rp <salary>",
+   "Cashier extends Employee: extra attribute shiftCount. Salary = baseSalary + shiftCount x 75000. Role = \"Cashier\"",
+   "Supervisor extends Employee: extra attribute bonusPercent. Salary = baseSalary + baseSalary x bonusPercent / 100 (integer math). Role = \"Supervisor\"",
+   "Both child constructors must call super(...)",
+   "Input: N, then N lines  C;Name;BaseSalary;ShiftCount  or  S;Name;BaseSalary;BonusPercent",
+   "Store everyone in one ArrayList<Employee>, call display() for each, then print:  Total salary: Rp <total>"
+  ],
+  "tests": [
+   {
+    "name": "Mixed staff",
+    "input": "3\nC;Andi;3000000;4\nS;Rina;5000000;20\nC;Joko;3200000;0",
+    "expect": [
+     "Cashier - Andi - Rp 3300000",
+     "Supervisor - Rina - Rp 6000000",
+     "Cashier - Joko - Rp 3200000",
+     "Total salary: Rp 12500000"
+    ]
+   },
+   {
+    "name": "One supervisor",
+    "input": "1\nS;Dewi;4500000;15",
+    "expect": [
+     "Supervisor - Dewi - Rp 5175000",
+     "Total salary: Rp 5175000"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "extends",
+    "cls": "Cashier",
+    "sup": "Employee",
+    "label": "Cashier extends Employee"
+   },
+   {
+    "type": "extends",
+    "cls": "Supervisor",
+    "sup": "Employee",
+    "label": "Supervisor extends Employee"
+   },
+   {
+    "type": "protectedFields",
+    "cls": "Employee",
+    "names": [
+     "name",
+     "baseSalary"
+    ],
+    "label": "Employee's name and baseSalary are protected"
+   },
+   {
+    "type": "superCall",
+    "cls": "Cashier",
+    "label": "Cashier's constructor calls super(...)"
+   },
+   {
+    "type": "superCall",
+    "cls": "Supervisor",
+    "label": "Supervisor's constructor calls super(...)"
+   },
+   {
+    "type": "overrides",
+    "cls": "Cashier",
+    "method": "calculateSalary",
+    "label": "Cashier overrides calculateSalary()"
+   },
+   {
+    "type": "overrides",
+    "cls": "Supervisor",
+    "method": "calculateSalary",
+    "label": "Supervisor overrides calculateSalary()"
+   }
+  ]
+ },
+ {
+  "n": 4,
+  "title": "Abstraction & polymorphism: shopping cart",
+  "hint": "abstract class, abstract method, polymorphism, printf",
+  "text": "Every item in the cart gets a different discount. Create:",
+  "bullets": [
+   "abstract class Item with private name (String) and price (double), getters, abstract double getDiscountRate(), and double getFinalPrice() = price - price x getDiscountRate()",
+   "Food extends Item (discount 10%), Beverage extends Item (discount 5%), Household extends Item (15% when price >= 50000, otherwise 0%)",
+   "Input: N, then N lines  F;Name;Price  /  B;Name;Price  /  H;Name;Price",
+   "Keep them in one ArrayList<Item> and print each one as  [<ClassName>] <name>: Rp <price> -> Rp <final price>  (2 decimals)",
+   "Finally print:  Total to pay: Rp <total>  (2 decimals)"
+  ],
+  "tests": [
+   {
+    "name": "All categories",
+    "input": "4\nF;Roti Tawar;15000\nB;Teh Botol;5000\nH;Sapu Ijuk;45000\nH;Rice Cooker;350000",
+    "expect": [
+     "[Food] Roti Tawar: Rp 15000.00 -> Rp 13500.00",
+     "[Beverage] Teh Botol: Rp 5000.00 -> Rp 4750.00",
+     "[Household] Sapu Ijuk: Rp 45000.00 -> Rp 45000.00",
+     "[Household] Rice Cooker: Rp 350000.00 -> Rp 297500.00",
+     "Total to pay: Rp 360750.00"
+    ]
+   },
+   {
+    "name": "Decimal prices",
+    "input": "2\nF;Keju Cheddar;27500\nB;Susu UHT;18900",
+    "expect": [
+     "[Food] Keju Cheddar: Rp 27500.00 -> Rp 24750.00",
+     "[Beverage] Susu UHT: Rp 18900.00 -> Rp 17955.00",
+     "Total to pay: Rp 42705.00"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "abstractClass",
+    "name": "Item",
+    "label": "Item is an abstract class"
+   },
+   {
+    "type": "abstractMethod",
+    "cls": "Item",
+    "method": "getDiscountRate",
+    "label": "getDiscountRate() is abstract in Item"
+   },
+   {
+    "type": "extends",
+    "cls": "Food",
+    "sup": "Item",
+    "label": "Food extends Item"
+   },
+   {
+    "type": "extends",
+    "cls": "Beverage",
+    "sup": "Item",
+    "label": "Beverage extends Item"
+   },
+   {
+    "type": "extends",
+    "cls": "Household",
+    "sup": "Item",
+    "label": "Household extends Item"
+   },
+   {
+    "type": "declType",
+    "name": "Item",
+    "generic": true,
+    "label": "items are stored as Item (e.g. ArrayList<Item>)"
+   }
+  ]
+ },
+ {
+  "n": 5,
+  "title": "Interface: payment methods",
+  "hint": "interface, implements, constant, polymorphism",
+  "text": "The cashier accepts several payment methods. Create interface Payment with a constant ADMIN_FEE = 2500 and two methods: double pay(double amount) and String getMethodName().",
+  "bullets": [
+   "Cash implements Payment: pays exactly the bill. Name \"Cash\"",
+   "DebitCard implements Payment: pays the bill + ADMIN_FEE. Name \"Debit Card\"",
+   "EWallet implements Payment: 2% cashback (pays bill - 2%) when the bill >= 100000, otherwise pays the bill. Name \"E-Wallet\"",
+   "Input: lines  <CODE> <amount>  until the word END. CODE is CASH, DEBIT or EWALLET",
+   "For each valid line print:  <method name>: bill Rp <amount>, paid Rp <paid>  (2 decimals)",
+   "For an unknown code print:  Unknown payment method: <CODE>  (the amount is still read and skipped)",
+   "At the end print:  Transactions: <count>, total paid: Rp <total>  (2 decimals)"
+  ],
+  "tests": [
+   {
+    "name": "All methods",
+    "input": "CASH 50000\nDEBIT 75000\nEWALLET 120000\nEWALLET 99999.5\nGOPAY 1000\nEND",
+    "expect": [
+     "Cash: bill Rp 50000.00, paid Rp 50000.00",
+     "Debit Card: bill Rp 75000.00, paid Rp 77500.00",
+     "E-Wallet: bill Rp 120000.00, paid Rp 117600.00",
+     "E-Wallet: bill Rp 99999.50, paid Rp 99999.50",
+     "Unknown payment method: GOPAY",
+     "Transactions: 4, total paid: Rp 345099.50"
+    ]
+   },
+   {
+    "name": "No transactions",
+    "input": "END",
+    "expect": [
+     "Transactions: 0, total paid: Rp 0.00"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "interface",
+    "name": "Payment",
+    "label": "interface Payment exists"
+   },
+   {
+    "type": "implements",
+    "cls": "Cash",
+    "iface": "Payment",
+    "label": "Cash implements Payment"
+   },
+   {
+    "type": "implements",
+    "cls": "DebitCard",
+    "iface": "Payment",
+    "label": "DebitCard implements Payment"
+   },
+   {
+    "type": "implements",
+    "cls": "EWallet",
+    "iface": "Payment",
+    "label": "EWallet implements Payment"
+   },
+   {
+    "type": "declType",
+    "name": "Payment",
+    "label": "a variable of type Payment is used (polymorphism)"
+   }
+  ]
+ },
+ {
+  "n": 6,
+  "title": "ArrayList: daily sales report",
+  "hint": "ArrayList<Integer>, loop, removeIf / Iterator",
+  "text": "Read today's sales amounts (positive integers) until the number 0, and store them in an ArrayList<Integer>.",
+  "bullets": [
+   "If there is no data, print  No data  and stop",
+   "Otherwise print, one per line:  Count: <n>,  Sum: <sum>,  Average: <avg with 2 decimals>,  Highest: <max>,  Lowest: <min>",
+   "Then remove every amount that is below the average from the list, and print:  At or above average: <list>  (use the ArrayList's toString, e.g. [300, 150])"
+  ],
+  "tests": [
+   {
+    "name": "Five sales",
+    "input": "120 85 300 45 150 0",
+    "expect": [
+     "Count: 5",
+     "Sum: 700",
+     "Average: 140.00",
+     "Highest: 300",
+     "Lowest: 45",
+     "At or above average: [300, 150]"
+    ]
+   },
+   {
+    "name": "No data",
+    "input": "0",
+    "expect": [
+     "No data"
+    ]
+   },
+   {
+    "name": "Two sales on separate lines",
+    "input": "10\n20\n0",
+    "expect": [
+     "Count: 2",
+     "Sum: 30",
+     "Average: 15.00",
+     "Highest: 20",
+     "Lowest: 10",
+     "At or above average: [20]"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "usesType",
+    "names": [
+     "ArrayList"
+    ],
+    "label": "uses an ArrayList"
+   }
+  ]
+ },
+ {
+  "n": 7,
+  "title": "Data structures: checkout queue with undo",
+  "hint": "Queue (FIFO), Stack (LIFO), LinkedList",
+  "text": "Simulate the checkout line. Customers wait in a queue (first come, first served); served customers are pushed to a stack so the last serve can be undone.",
+  "bullets": [
+   "JOIN <name>  -> add to the back of the queue, print  <name> joined the queue (size: <size>)",
+   "SERVE  -> take the front customer, push them on the stack, print  Serving <name>   (empty queue: No customers in queue)",
+   "UNDO  -> pop the last served customer and put them back at the FRONT of the queue, print  <name> is back at the front   (empty stack: Nothing to undo)",
+   "SHOW  -> print  Queue: <queue>  (toString of the queue, e.g. [Andi, Budi])",
+   "EXIT  -> stop and print  Customers served: <stack size>"
+  ],
+  "tests": [
+   {
+    "name": "Full scenario",
+    "input": "JOIN Andi\nJOIN Budi\nSHOW\nSERVE\nSERVE\nSERVE\nUNDO\nSHOW\nJOIN Citra\nSHOW\nEXIT",
+    "expect": [
+     "Andi joined the queue (size: 1)",
+     "Budi joined the queue (size: 2)",
+     "Queue: [Andi, Budi]",
+     "Serving Andi",
+     "Serving Budi",
+     "No customers in queue",
+     "Budi is back at the front",
+     "Queue: [Budi]",
+     "Citra joined the queue (size: 2)",
+     "Queue: [Budi, Citra]",
+     "Customers served: 1"
+    ]
+   },
+   {
+    "name": "Empty structures",
+    "input": "UNDO\nSERVE\nSHOW\nEXIT",
+    "expect": [
+     "Nothing to undo",
+     "No customers in queue",
+     "Queue: []",
+     "Customers served: 0"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "usesType",
+    "names": [
+     "Queue",
+     "Deque",
+     "LinkedList",
+     "ArrayDeque"
+    ],
+    "label": "uses a queue (Queue / Deque / LinkedList / ArrayDeque)"
+   },
+   {
+    "type": "usesType",
+    "names": [
+     "Stack",
+     "Deque",
+     "ArrayDeque"
+    ],
+    "label": "uses a stack (Stack / Deque)"
+   }
+  ]
+ },
+ {
+  "n": 8,
+  "title": "HashMap: best seller",
+  "hint": "HashMap, getOrDefault, TreeMap, Map.Entry",
+  "text": "Read sale records  <productName> <quantity>  (the name is one word) until the word END. Use a HashMap<String, Integer> to add up the quantity of each product.",
+  "bullets": [
+   "If nothing was sold print  No sales today  and stop",
+   "Print every product in alphabetical order as  <name>: <total quantity>",
+   "Then print  Products sold: <number of different products>",
+   "Then print  Best seller: <name> (<quantity> pcs)  - if several products tie, choose the alphabetically first one"
+  ],
+  "tests": [
+   {
+    "name": "Repeated products",
+    "input": "Apel 5\nSusu 3\nApel 7\nRoti 10\nSusu 2\nEND",
+    "expect": [
+     "Apel: 12",
+     "Roti: 10",
+     "Susu: 5",
+     "Products sold: 3",
+     "Best seller: Apel (12 pcs)"
+    ]
+   },
+   {
+    "name": "No sales",
+    "input": "END",
+    "expect": [
+     "No sales today"
+    ]
+   },
+   {
+    "name": "Tie",
+    "input": "Teh 4\nKopi 4\nEND",
+    "expect": [
+     "Kopi: 4",
+     "Teh: 4",
+     "Products sold: 2",
+     "Best seller: Kopi (4 pcs)"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "usesType",
+    "names": [
+     "HashMap",
+     "TreeMap",
+     "Map",
+     "LinkedHashMap"
+    ],
+    "label": "uses a Map (HashMap / TreeMap)"
+   }
+  ]
+ },
+ {
+  "n": 9,
+  "title": "CRUD part 1: Insert & View (menu)",
+  "hint": "menu loop, validation, try-catch, ArrayList<Product>, sort, printf",
+  "text": "Build the start of the Hehe Groceries cashier app. Show this menu until the user picks 3:",
+  "bullets": [
+   "Menu text: Hehe Groceries / ============== / 1. Insert Product / 2. View Products / 3. Exit / prompt >>  (a non-number or unknown choice simply shows the menu again)",
+   "Insert - name: \"Input product name [5-25 characters]: \" (repeat until 5-25 characters)",
+   "Insert - category: \"Input product category [Food | Beverage | Household]: \" (case sensitive, repeat until valid)",
+   "Insert - price: \"Input product price [1000 - 1000000]: \" and stock: \"Input product stock [1 - 500]: \" (repeat on out-of-range OR non-numeric input)",
+   "The ID is PR + a 3-digit counter that starts at 001 (PR001, PR002, ...). Then print  Product <ID> successfully inserted!",
+   "View - when empty print  There is no product data!  otherwise sort the list by name (A-Z) and print a table:  | No | ID | Name | Category | Price | Stock |  one row per product, e.g.  | 1 | PR002 | Beras Pandan Wangi 5kg | Food | 78000 | 35 |",
+   "Exit prints  Thank you for using Hehe Groceries!"
+  ],
+  "tests": [
+   {
+    "name": "Validation and sorting",
+    "input": "2\n1\nKopi\nKopi Kapal Api\nfood\nBeverage\nabc\n500\n15000\n0\n120\n1\nBeras Pandan Wangi 5kg\nFood\n78000\n35\n2\n3",
+    "expect": [
+     "There is no product data!",
+     "Product PR001 successfully inserted!",
+     "Product PR002 successfully inserted!",
+     "| 1 | PR002 | Beras Pandan Wangi 5kg | Food | 78000 | 35 |",
+     "| 2 | PR001 | Kopi Kapal Api | Beverage | 15000 | 120 |",
+     "Thank you for using Hehe Groceries!"
+    ]
+   },
+   {
+    "name": "Bad menu input",
+    "input": "x\n9\n3",
+    "expect": [
+     "Thank you for using Hehe Groceries!"
+    ]
+   },
+   {
+    "name": "Boundary values",
+    "input": "1\nAbcdefghijklmnopqrstuvwxyz\nAbcdefghijklmnopqrstuvwxy\nHousehold\n999\n1000000\n501\n500\n1\nGulai\nFood\n1000\n1\n2\n3",
+    "expect": [
+     "Product PR001 successfully inserted!",
+     "Product PR002 successfully inserted!",
+     "| 1 | PR001 | Abcdefghijklmnopqrstuvwxy | Household | 1000000 | 500 |",
+     "| 2 | PR002 | Gulai | Food | 1000 | 1 |",
+     "Thank you for using Hehe Groceries!"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "class",
+    "name": "Product",
+    "label": "class Product exists"
+   },
+   {
+    "type": "privateFields",
+    "cls": "Product",
+    "min": 5,
+    "label": "Product has (at least 5) private attributes"
+   },
+   {
+    "type": "declType",
+    "name": "Product",
+    "generic": true,
+    "label": "products are kept in an ArrayList<Product>"
+   }
+  ]
+ },
+ {
+  "n": 10,
+  "title": "CRUD part 2: full app (UTS simulation)",
+  "hint": "Create, Read, Update, Delete, ArrayList, validation",
+  "text": "Extend part 1 into the full app. Menu: 1. Insert Product / 2. View Products / 3. Update Product / 4. Delete Product / 5. Exit. Insert and View behave exactly as in part 1.",
+  "bullets": [
+   "Update and Delete first show the View table. When there is no data they only print  There is no product data!  and go back to the menu",
+   "Update: \"Input product number to update [1-N]: \" (repeat until valid), then \"Input new price [1000 - 1000000]: \" and \"Input new stock [1 - 500]: \", then print  Product <ID> successfully updated!",
+   "Delete: \"Input product number to delete [1-N]: \", then \"Are you sure? [Y/N]: \" (repeat until Y/N, case insensitive). Y prints  Product <ID> successfully deleted!  N prints  Delete cancelled",
+   "The number refers to the row number shown in the (sorted) table",
+   "The ID counter is never reused: after deleting PR001, the next product is still PR00(next)",
+   "Exit prints  Thank you for using Hehe Groceries!"
+  ],
+  "tests": [
+   {
+    "name": "Update, cancel, delete",
+    "input": "3\n4\n1\nSusu Ultra Coklat\nBeverage\n6500\n48\n1\nGula Pasir 1kg\nFood\n17000\n60\n3\n5\n2\n7000\n50\n4\n1\nmaybe\nn\n4\n1\nY\n2\n5",
+    "expect": [
+     "There is no product data!",
+     "There is no product data!",
+     "Product PR001 successfully inserted!",
+     "Product PR002 successfully inserted!",
+     "| 1 | PR002 | Gula Pasir 1kg | Food | 17000 | 60 |",
+     "Product PR001 successfully updated!",
+     "Delete cancelled",
+     "Product PR002 successfully deleted!",
+     "| 1 | PR001 | Susu Ultra Coklat | Beverage | 7000 | 50 |",
+     "Thank you for using Hehe Groceries!"
+    ]
+   },
+   {
+    "name": "ID counter is not reused",
+    "input": "1\nMie Sedaap Soto\nFood\n3000\n100\n4\n1\ny\n1\nAir Mineral 600ml\nBeverage\n4000\n200\n2\n5",
+    "expect": [
+     "Product PR001 successfully inserted!",
+     "Product PR001 successfully deleted!",
+     "Product PR002 successfully inserted!",
+     "| 1 | PR002 | Air Mineral 600ml | Beverage | 4000 | 200 |",
+     "Thank you for using Hehe Groceries!"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "privateFields",
+    "cls": "Product",
+    "min": 5,
+    "label": "Product has (at least 5) private attributes"
+   },
+   {
+    "type": "declType",
+    "name": "Product",
+    "generic": true,
+    "label": "products are kept in an ArrayList<Product>"
+   }
+  ]
+ },
+ {
+  "n": 11,
+  "title": "Exceptions: checkout with a custom exception",
+  "hint": "extends Exception, throw, throws, try-catch, multi-catch",
+  "text": "Stock must never go negative. Create a checked exception and use try-catch in Main:",
+  "bullets": [
+   "class OutOfStockException extends Exception, with a constructor that receives the message and passes it to super(...)",
+   "In Product add  public void buy(int qty) throws OutOfStockException :  qty <= 0 throws an IllegalArgumentException(\"Quantity must be positive\"); qty > stock throws  new OutOfStockException(\"Not enough <name>: only <stock> left\");  otherwise stock decreases",
+   "Input: N, N lines  Name;Stock,  then M, M order lines  Name;Qty  (the product name is matched ignoring upper/lower case)",
+   "Unknown product -> print  Product not found: <name>",
+   "Qty that is not a number -> print  Invalid quantity: <text>  (catch NumberFormatException)",
+   "Success -> print  Bought <qty> <name>, <stock> left    Failure -> print  Failed: <exception message>",
+   "Finally print  Remaining stock:  followed by  <name>: <stock>  for every product (input order)"
+  ],
+  "tests": [
+   {
+    "name": "All kinds of orders",
+    "input": "2\nGula;10\nTelur;30\n6\ngula;4\nTelur;31\nSusu;2\nTelur;abc\nGula;0\nGULA;6",
+    "expect": [
+     "Bought 4 Gula, 6 left",
+     "Failed: Not enough Telur: only 30 left",
+     "Product not found: Susu",
+     "Invalid quantity: abc",
+     "Failed: Quantity must be positive",
+     "Bought 6 Gula, 0 left",
+     "Remaining stock:",
+     "Gula: 0",
+     "Telur: 30"
+    ]
+   },
+   {
+    "name": "No orders",
+    "input": "1\nKopi;5\n0",
+    "expect": [
+     "Remaining stock:",
+     "Kopi: 5"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "extends",
+    "cls": "OutOfStockException",
+    "sup": "Exception",
+    "label": "OutOfStockException extends Exception"
+   },
+   {
+    "type": "throws",
+    "cls": "Product",
+    "method": "buy",
+    "exc": "OutOfStockException",
+    "label": "buy(...) declares throws OutOfStockException"
+   },
+   {
+    "type": "usesNode",
+    "kind": "Try",
+    "label": "uses try-catch"
+   }
+  ]
+ },
+ {
+  "n": 12,
+  "title": "Sorting & searching an ArrayList",
+  "hint": "Comparator, Comparable, sort, toLowerCase, contains",
+  "text": "Read N products (Name;Category;Price), then commands until the line END:",
+  "bullets": [
+   "Product has private name, category, price and a toString() that returns  <name> (<category>) - Rp <price>",
+   "SORT PRICE  -> sort the list by price ascending (equal prices: by name) and print every product",
+   "SORT NAME  -> sort the list by name, ignoring upper/lower case, and print every product",
+   "SEARCH <keyword>  -> print (in the current list order) every product whose name contains the keyword, ignoring case; if none print  No product matches '<keyword>'",
+   "CHEAPEST <category>  -> print  Cheapest <category>: <product>  or  No product in <category>"
+  ],
+  "tests": [
+   {
+    "name": "Sort, search and cheapest",
+    "input": "5\nTeh Pucuk;Beverage;4000\nmilo;Beverage;9500\nRoti Sobek;Food;12000\nIndomie;Food;3500\nAir Mineral;Beverage;4000\nSORT PRICE\nSEARCH ro\nSORT NAME\nCHEAPEST Food\nCHEAPEST Snack\nSEARCH xyz\nEND",
+    "expect": [
+     "Indomie (Food) - Rp 3500",
+     "Air Mineral (Beverage) - Rp 4000",
+     "Teh Pucuk (Beverage) - Rp 4000",
+     "milo (Beverage) - Rp 9500",
+     "Roti Sobek (Food) - Rp 12000",
+     "Roti Sobek (Food) - Rp 12000",
+     "Air Mineral (Beverage) - Rp 4000",
+     "Indomie (Food) - Rp 3500",
+     "milo (Beverage) - Rp 9500",
+     "Roti Sobek (Food) - Rp 12000",
+     "Teh Pucuk (Beverage) - Rp 4000",
+     "Cheapest Food: Indomie (Food) - Rp 3500",
+     "No product in Snack",
+     "No product matches 'xyz'"
+    ]
+   },
+   {
+    "name": "Search keeps list order",
+    "input": "3\nKopi Susu;Beverage;15000\nSusu UHT;Beverage;18900\nRoti Susu;Food;8000\nSEARCH SUSU\nEND",
+    "expect": [
+     "Kopi Susu (Beverage) - Rp 15000",
+     "Susu UHT (Beverage) - Rp 18900",
+     "Roti Susu (Food) - Rp 8000"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "privateFields",
+    "cls": "Product",
+    "min": 3,
+    "label": "Product's attributes are private"
+   },
+   {
+    "type": "method",
+    "cls": "Product",
+    "name": "toString",
+    "label": "Product overrides toString()"
+   },
+   {
+    "type": "calls",
+    "names": [
+     "sort"
+    ],
+    "label": "sorts with sort(...) / Collections.sort(...)"
+   }
+  ]
+ },
+ {
+  "n": 13,
+  "title": "CRUD + inheritance: Hehe Membership",
+  "hint": "abstract class, polymorphism, ArrayList<Member>, set, remove",
+  "text": "A second exam-style app. Members are Regular (5% discount) or VIP (15%). Menu: Hehe Membership / 1. Register Member / 2. View Members / 3. Upgrade Member / 4. Remove Member / 5. Exit / >>  (bad input shows the menu again)",
+  "bullets": [
+   "abstract class Member with private id, name, phone, getters, abstract String getType() and abstract int getDiscount(). RegularMember and VipMember extend it",
+   "Register: \"Input name [3-20 characters]: \", \"Input phone [starts with 08, 10-13 digits]: \" (only digits), \"Input member type [Regular | VIP]: \" (case sensitive). Repeat each until valid",
+   "ID = MB + 3-digit counter starting at 001, then print  Member <ID> registered!",
+   "View: empty -> No members yet!  otherwise a table in insertion order:  | No | ID | Name | Phone | Type | Discount |  e.g.  | 1 | MB001 | Budi | 081234567890 | Regular | 5% |",
+   "Upgrade: show the table, \"Choose member to upgrade [1-N]: \" (repeat until valid). If the member is already VIP print  Member <ID> is already VIP  otherwise replace it in the list with a VipMember that keeps the same id, name and phone, and print  Member <ID> upgraded to VIP!",
+   "Remove: show the table, \"Choose member to remove [1-N]: \", then  Member <ID> removed!",
+   "Upgrade/Remove on an empty list only print  No members yet!   Exit prints  Bye!"
+  ],
+  "tests": [
+   {
+    "name": "Register, upgrade, remove",
+    "input": "2\n1\nBo\nBudi Santoso\n0812345\n081234567890\nregular\nRegular\n1\nCitra\n08571234567\nVIP\n3\n3\n1\n3\n2\n2\n4\n2\n2\n5",
+    "expect": [
+     "No members yet!",
+     "Member MB001 registered!",
+     "Member MB002 registered!",
+     "| 1 | MB001 | Budi Santoso | 081234567890 | Regular | 5% |",
+     "Member MB001 upgraded to VIP!",
+     "Member MB002 is already VIP",
+     "| 1 | MB001 | Budi Santoso | 081234567890 | VIP | 15% |",
+     "Member MB002 removed!",
+     "| 1 | MB001 | Budi Santoso | 081234567890 | VIP | 15% |",
+     "Bye!"
+    ]
+   },
+   {
+    "name": "Empty list and phone validation",
+    "input": "3\n4\nabc\n1\nAnisa\n08abc45678\n0712345678\n08123456789012\n0812345678\nVIP\n2\n5",
+    "expect": [
+     "No members yet!",
+     "No members yet!",
+     "Member MB001 registered!",
+     "| 1 | MB001 | Anisa | 0812345678 | VIP | 15% |",
+     "Bye!"
+    ]
+   }
+  ],
+  "reqs": [
+   {
+    "type": "abstractClass",
+    "name": "Member",
+    "label": "Member is an abstract class"
+   },
+   {
+    "type": "extends",
+    "cls": "RegularMember",
+    "sup": "Member",
+    "label": "RegularMember extends Member"
+   },
+   {
+    "type": "extends",
+    "cls": "VipMember",
+    "sup": "Member",
+    "label": "VipMember extends Member"
+   },
+   {
+    "type": "privateFields",
+    "cls": "Member",
+    "min": 3,
+    "label": "Member's attributes are private"
+   },
+   {
+    "type": "declType",
+    "name": "Member",
+    "generic": true,
+    "label": "members are kept in an ArrayList<Member>"
+   }
+  ]
+ }
+]
